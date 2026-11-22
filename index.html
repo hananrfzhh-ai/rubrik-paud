@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Penyusun Rubrik Unjuk Kerja Otentik PAUD</title>
+<style>
+:root{--bg:#eef7f3;--card:#fff;--g:#6fb99a;--gd:#3f8f70;--b:#dcecf7;--bd:#4a86ad;--t:#2b3a35;--m:#6b7c75;--line:#d5e5de;--err:#c0504d;--yellow:#fff3c9;--cloud:#5b8def}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--t);line-height:1.5}
+.app{max-width:900px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.7rem;margin:.2em 0 .1em;color:var(--gd)}
+.sub{color:var(--m);margin:0 0 18px}
+.steps{display:flex;gap:6px;margin-bottom:18px}
+.step{flex:1;text-align:center;font-size:.78rem;padding:8px 4px;border-radius:10px;background:var(--b);color:var(--bd)}
+.step.on{background:var(--g);color:#fff;font-weight:600}
+.step.done{background:#cfe8dc;color:var(--gd)}
+.card{background:var(--card);border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(63,143,112,.1)}
+.screen{display:none}.screen.active{display:block}
+h2{margin-top:0;font-size:1.25rem;color:var(--bd)}
+label{display:block;font-weight:600;margin:14px 0 5px;font-size:.92rem}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:#fbfefd}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(111,185,154,.25)}
+textarea{min-height:90px;resize:vertical}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border:none;border-radius:10px;padding:11px 20px;font-weight:600}
+.pri{background:var(--g);color:#fff}.pri:hover{background:var(--gd)}
+.sec{background:var(--b);color:var(--bd)}
+.add{background:var(--yellow);color:#7a5d00}
+.cloud{background:var(--cloud);color:#fff}
+.err{color:var(--err);font-size:.88rem;margin-top:12px;min-height:1.2em}
+.ok{color:#2e7d32;font-size:.88rem;margin-top:12px}
+.info{background:var(--b);color:#2f5f80;padding:12px 14px;border-radius:10px;font-size:.92rem}
+.crit{border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-top:16px;position:relative}
+.crit>input{font-weight:600}
+.crit .hapus{position:absolute;top:10px;right:10px;background:#fde8e8;color:var(--err);padding:4px 10px;font-size:.75rem;border-radius:6px}
+.lvl{margin-top:12px}
+.lvl .row{display:flex;gap:10px;align-items:flex-start}
+.lvl textarea{min-height:70px}
+.ex{white-space:nowrap;background:var(--yellow);color:#7a5d00;padding:8px 10px;font-size:.82rem;border-radius:8px}
+.ex:disabled{background:#eee;color:#aaa;cursor:not-allowed}
+.lb{font-size:.85rem;font-weight:700;color:var(--gd)}
+table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.9rem}
+th,td{border:1px solid #9bbfae;padding:8px;vertical-align:top;text-align:left}
+th{background:#dff0e8}
+.meta td{border:none;padding:3px 6px 3px 0}.meta td:first-child{width:170px;font-weight:600}
+.tw{overflow-x:auto}
+.big{font-size:1.1rem;padding:14px 28px}
+.blk{margin-top:12px}.blk b{color:var(--gd)}
+.pre{white-space:pre-wrap}
+.checklist{background:#e8f5e9;border-left:4px solid var(--g);padding:10px 14px;border-radius:8px;margin-top:12px;font-size:.92rem;color:#2e7d32}
+.hidden{display:none}
+.datetime-row{display:flex;gap:10px;align-items:flex-end}
+.datetime-row > div{flex:1}
+.btn-refresh{background:var(--b);color:var(--bd);padding:10px 14px;font-size:.85rem}
+.hint{font-size:.8rem;color:var(--m);margin-top:4px;font-style:italic}
+.child-info{background:#f0f9f4;border:1.5px dashed var(--g);border-radius:10px;padding:12px;margin-top:10px;font-size:.9rem;display:none}
+.child-info.show{display:block}
+.child-info b{color:var(--gd)}
+.modal-bg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:14px;padding:20px;max-width:500px;width:100%;position:relative;border-left:5px solid #f0cf5b;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.modal h3{margin:0 0 10px;color:#7a5d00;font-size:1rem}
+.modal p{margin:0 0 14px;line-height:1.6;font-size:.95rem}
+.modal .close{position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#999}
+@media(max-width:600px){.lvl .row{flex-direction:column}.step span{display:none}.datetime-row{flex-direction:column}}
+@media print{
+ body{background:#fff}.no-print,.steps,.nav,.sub,h1.main,.checklist{display:none!important}
+ .card{box-shadow:none;padding:0}.app{padding:0;max-width:none}
+ .screen{display:none!important}#s4{display:block!important}
+ table{page-break-inside:auto}tr{page-break-inside:avoid}
+ th{background:#e5e5e5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<h1 class="main">Penyusun Rubrik Unjuk Kerja Otentik</h1>
+<p class="sub">Alat bantu guru PAUD menyusun rubrik spesifik & teramati, tersimpan otomatis ke Google Drive & Spreadsheet.</p>
+<div class="steps" id="steps"></div>
+
+<div class="card screen active" id="s0">
+ <h2>0. Identitas Guru & Anak</h2>
+ <label for="nama_guru">Nama Lengkap Guru</label>
+ <input id="nama_guru" placeholder="Contoh: Rina Kusuma, S.Pd.">
+ <label for="nip">NIP (Opsional)</label>
+ <input id="nip" placeholder="Contoh: 199001012023...">
+ <label for="kelas_pa">Kelas yang Diampu</label>
+ <select id="kelas_pa" onchange="updateDaftarAnak()">
+  <option value="">-- Pilih Kelas --</option>
+  <option value="TK A">TK A (4-5 Tahun)</option>
+  <option value="TK B">TK B (5-6 Tahun)</option>
+ </select>
+ <label for="nama_anak">Nama Anak yang Diamati</label>
+ <input id="nama_anak" list="daftar_anak" placeholder="Ketik nama (misal: 'Putri') untuk mencari..." onchange="isiDataAnak()">
+ <datalist id="daftar_anak"></datalist>
+ <p class="hint">💡 Begitu nama anak dipilih, tanggal lahir & usia akan terisi OTOMATIS.</p>
+ <div class="child-info" id="child_info">
+  🎂 <b>Tanggal Lahir:</b> <span id="info_tgl_lahir">-</span><br>
+  📊 <b>Usia Saat Asesmen:</b> <span id="info_usia">-</span>
+ </div>
+ <div class="err" id="e0"></div>
+ <div class="nav"><span></span><button class="pri" onclick="next(0)">Lanjut ke Identitas & Indikator ➡️</button></div>
+</div>
+
+<div class="card screen" id="s1">
+ <h2>1. Identitas & Indikator STPPA</h2>
+ <div class="datetime-row">
+  <div><label for="tanggal">📅 Tanggal Pelaksanaan</label><input type="date" id="tanggal" onchange="isiDataAnak()"></div>
+  <div><label for="jam">⏰ Jam</label><input type="time" id="jam"></div>
+  <div style="flex:0 0 auto"><label>&nbsp;</label><button class="btn-refresh" onclick="isiWaktuSekarang()">🔄 Sekarang</button></div>
+ </div>
+ <p class="hint">Tanggal & jam terisi otomatis. Mengubah tanggal asesmen akan memperbarui usia anak.</p>
+ <label for="aspek">Aspek Perkembangan</label>
+ <select id="aspek"></select>
+ <label for="usia">Usia Sasaran (Kelompok)</label>
+ <select id="usia"><option>4-5 Tahun</option><option>5-6 Tahun</option></select>
+ <label for="indikator">Indikator STPPA</label>
+ <select id="indikator"></select>
+ <div id="indikator_manual_wrap" class="hidden">
+  <label for="indikator_manual">Tulis Indikator STPPA Anda:</label>
+  <input id="indikator_manual" placeholder="Contoh: Mampu mengklasifikasikan benda...">
+ </div>
+ <label for="judul">Judul Kegiatan</label>
+ <input id="judul" placeholder="Contoh: Menggunting Pola Daun">
+ <label for="tujuan">Tujuan Asesmen</label>
+ <input id="tujuan" placeholder="Contoh: Mengetahui kemampuan motorik halus anak dalam menggunting">
+ <p class="hint">💡 Contoh: "Mengetahui kemampuan anak dalam [keterampilan] saat [aktivitas]."</p>
+ <div class="err" id="e1"></div>
+ <div class="nav"><button class="sec" onclick="go(0)">⬅️ Kembali</button><button class="pri" onclick="next(1)">Lanjut ke Deskripsi Tugas ➡️</button></div>
+</div>
+
+<div class="card screen" id="s2">
+ <h2>2. Deskripsi & Pelaksanaan</h2>
+ <label for="tugas">Deskripsi Tugas</label>
+ <textarea id="tugas" placeholder="Contoh: Anak diminta menggunting gambar daun mengikuti garis pola..."></textarea>
+ <label for="alat">Alat & Bahan</label>
+ <textarea id="alat" placeholder="Contoh: Gunting anak, kertas bergambar pola daun, lem, karton."></textarea>
+ <label for="skrip">Skrip untuk Anak</label>
+ <textarea id="skrip" placeholder='Contoh: "Ayo adik-adik, coba gunting gambar daun ini mengikuti garisnya ya!"'></textarea>
+ <label for="prosedur">Prosedur Observasi</label>
+ <textarea id="prosedur" placeholder="Contoh: Guru mengamati dari jarak dekat tanpa intervensi."></textarea>
+ <label for="waktu">Estimasi Waktu</label>
+ <select id="waktu">
+  <option value="">-- Pilih Durasi --</option>
+  <option value="5 menit">5 menit</option>
+  <option value="10 menit">10 menit</option>
+  <option value="15 menit">15 menit</option>
+  <option value="20 menit">20 menit</option>
+  <option value="25 menit">25 menit</option>
+  <option value="30 menit">30 menit</option>
+  <option value="45 menit">45 menit</option>
+  <option value="60 menit">60 menit</option>
+ </select>
+ <p class="hint">💡 Untuk anak usia 4-5 tahun, durasi ideal 10-15 menit. Untuk 5-6 tahun, bisa 15-25 menit.</p>
+ <div class="err" id="e2"></div>
+ <div class="nav"><button class="sec" onclick="go(1)">⬅️ Kembali</button><button class="pri" onclick="next(2)">Lanjut ke Rubrik ➡️</button></div>
+</div>
+
+<div class="card screen" id="s3">
+ <h2>3. Form Rubrik dengan Bantuan Contoh</h2>
+ <div class="info">Tulis minimal 3 kriteria. Tombol 💡 akan aktif setelah Anda mengetik minimal <b>5 karakter</b>.</div>
+ <div id="crits"></div>
+ <div style="margin-top:14px"><button class="add" onclick="tambahKriteria()">+ Tambah Kriteria</button></div>
+ <div class="err" id="e3"></div>
+ <div class="nav"><button class="sec" onclick="go(2)">⬅️ Kembali</button><button class="pri" onclick="next(3)">Lanjut ke Pratinjau ➡️</button></div>
+</div>
+
+<div class="card screen" id="s4">
+ <h2 class="no-print">4. Pratinjau & Simpan</h2>
+ <div id="preview"></div>
+ <div class="nav no-print">
+  <button class="sec" onclick="go(3)">⬅️ Kembali</button>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+   <button class="cloud" onclick="simpanKeGoogle()">☁️ Simpan ke Drive & Sheets</button>
+   <button class="pri" onclick="window.print()">🖨️ Cetak PDF</button>
+  </div>
+ </div>
+ <div class="err" id="e4"></div>
+ <div class="ok" id="ok4"></div>
+</div>
+
+<div class="modal-bg" id="modalBg">
+ <div class="modal">
+  <button class="close" onclick="tutupModal()">✕</button>
+  <h3 id="modalTitle">Contoh Deskripsi</h3>
+  <p id="modalText"></p>
+  <button class="sec" onclick="tutupModal()">Tutup</button>
+ </div>
+</div>
+</div>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1ypv87Jlk2f3YOc0QPSBhC0sfVX3d-Wbv6mJUgU0WKXzPygawNvFGctjdEP71YI/exec";
+
+const DAFTAR_ANAK = {
+ "TK A": [
+  {nama:"Anandiyah Putri Rahmah", tglLahir:"2021-03-15"},
+  {nama:"Bintang Pratama Putra", tglLahir:"2021-07-22"},
+  {nama:"Cempaka Sari Dewi", tglLahir:"2021-01-10"},
+  {nama:"Dahlia Putri Anggraini", tglLahir:"2021-05-30"},
+  {nama:"Elang Firmansyah", tglLahir:"2021-09-18"},
+  {nama:"Farel Muhammad Rizki", tglLahir:"2021-11-05"},
+  {nama:"Gita Puspitasari", tglLahir:"2021-02-14"},
+  {nama:"Hana Safitri", tglLahir:"2021-06-25"},
+  {nama:"Indra Lesmana", tglLahir:"2021-08-08"},
+  {nama:"Jihan Aulia Rahman", tglLahir:"2021-10-12"},
+  {nama:"Kevin Sanjaya", tglLahir:"2021-04-03"},
+  {nama:"Lala Ramadhani", tglLahir:"2021-12-20"},
+  {nama:"Miko Setiawan", tglLahir:"2021-03-28"},
+  {nama:"Nisa Khairunnisa", tglLahir:"2021-07-15"},
+  {nama:"Omar Faruq", tglLahir:"2021-09-09"},
+  {nama:"Putri Ayu Lestari", tglLahir:"2021-01-25"},
+  {nama:"Qori Aisyah", tglLahir:"2021-05-18"},
+  {nama:"Rizal Fahlevi", tglLahir:"2021-11-11"},
+  {nama:"Siti Nurhaliza", tglLahir:"2021-02-02"},
+  {nama:"Tegar Aditya", tglLahir:"2021-08-30"}
+ ],
+ "TK B": [
+  {nama:"Arka Wijaya", tglLahir:"2020-04-10"},
+  {nama:"Bunga Citra Lestari", tglLahir:"2020-08-17"},
+  {nama:"Cakra Nugraha", tglLahir:"2020-12-03"},
+  {nama:"Dina Amelia Putri", tglLahir:"2020-02-28"},
+  {nama:"Eka Saputra", tglLahir:"2020-06-15"},
+  {nama:"Fira Maharani", tglLahir:"2020-10-22"},
+  {nama:"Galih Ginanjar", tglLahir:"2020-01-08"},
+  {nama:"Hani Rahmawati", tglLahir:"2020-05-25"},
+  {nama:"Irfan Hakim", tglLahir:"2020-09-12"},
+  {nama:"Joko Susilo", tglLahir:"2020-11-30"},
+  {nama:"Kirana Dewi Sartika", tglLahir:"2020-03-18"},
+  {nama:"Luki Prasetyo", tglLahir:"2020-07-05"},
+  {nama:"Maya Angelina", tglLahir:"2020-10-15"},
+  {nama:"Nanda Pratama", tglLahir:"2020-02-20"},
+  {nama:"Oki Setiana", tglLahir:"2020-06-08"},
+  {nama:"Putri Handayani", tglLahir:"2020-09-25"},
+  {nama:"Raka Mahesa", tglLahir:"2020-12-12"},
+  {nama:"Salsaabila Nur", tglLahir:"2020-04-28"},
+  {nama:"Taufik Hidayat", tglLahir:"2020-08-05"},
+  {nama:"Umar Bakri", tglLahir:"2020-11-18"}
+ ]
+};
+
+const IND={
+"Fisik-Motorik":{"4-5 Tahun":["Terampil menggunakan tangan kanan dan kiri (melipat, menggunting, meronce)","Mampu melompat dan berlari secara terkoordinasi"],"5-6 Tahun":["Melakukan gerakan melompat, meloncat, berlari secara lincah","Menggunakan alat tulis dengan genggaman yang tepat"]},
+"Nilai Agama & Moral":{"4-5 Tahun":["Melafalkan doa-doa pendek sehari-hari dengan lancar"],"5-6 Tahun":["Melakukan gerakan ibadah sesuai agamanya"]},
+"Kognitif":{"4-5 Tahun":["Mengklasifikasikan benda berdasarkan warna, bentuk, dan ukuran"],"5-6 Tahun":["Menyelesaikan tugas meskipun menghadapi kesulitan hingga tuntas"]},
+"Bahasa":{"4-5 Tahun":["Mengungkapkan keinginan, perasaan, dan pendapat dengan kalimat sederhana"],"5-6 Tahun":["Menceritakan kembali isi cerita/dongeng yang telah didengar secara runtut"]},
+"Sosial-Emosional":{"4-5 Tahun":["Mengurus dirinya sendiri dengan sedikit bantuan"],"5-6 Tahun":["Mengendalikan emosi dan mengikuti aturan permainan"]},
+"Seni":{"4-5 Tahun":["Menghasilkan karya seni sederhana dengan berbagai media"],"5-6 Tahun":["Menampilkan hasil karya seni sesuai kreativitasnya"]}
+};
+const LV=[["BB","Belum Berkembang"],["MB","Mulai Berkembang"],["BSH","Berkembang Sesuai Harapan"],["BSB","Berkembang Sangat Baik"]];
+const DEF=["Ketepatan mengikuti garis","Kemandirian","Kerapian"];
+const NAMES=["Guru","Indikator","Deskripsi","Rubrik","Pratinjau"];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let critCount=0;
+
+function ex(l,k){k=k||"kriteria ini";return{
+BB:`Anak belum mampu menunjukkan "${k}" meskipun sudah dibantu langsung oleh guru.`,
+MB:`Anak mampu melakukan "${k}", namun masih perlu 1x bantuan verbal guru.`,
+BSH:`Anak mampu melakukan "${k}" secara mandiri tanpa bantuan guru.`,
+BSB:`Anak mampu melakukan "${k}" secara mandiri dengan hasil tepat, serta membantu teman.`}[l]}
+
+function isiWaktuSekarang(){
+ const now=new Date();
+ const y=now.getFullYear(), m=String(now.getMonth()+1).padStart(2,'0'), d=String(now.getDate()).padStart(2,'0');
+ const h=String(now.getHours()).padStart(2,'0'), min=String(now.getMinutes()).padStart(2,'0');
+ $("tanggal").value=`${y}-${m}-${d}`; $("jam").value=`${h}:${min}`;
+ isiDataAnak();
+}
+
+function isiDataAnak(){
+ const nama = $("nama_anak").value.trim();
+ const kelas = $("kelas_pa").value;
+ if(!nama || !kelas || !DAFTAR_ANAK[kelas]){
+  $("child_info").classList.remove('show');
+  return;
+ }
+ const anak = DAFTAR_ANAK[kelas].find(a => a.nama === nama);
+ if(anak){
+  const tglLahir = new Date(anak.tglLahir);
+  const tglAsesmen = $("tanggal").value ? new Date($("tanggal").value) : new Date();
+  let tahun = tglAsesmen.getFullYear() - tglLahir.getFullYear();
+  let bulan = tglAsesmen.getMonth() - tglLahir.getMonth();
+  if(bulan < 0 || (bulan === 0 && tglAsesmen.getDate() < tglLahir.getDate())){
+   tahun--;
+   bulan += 12;
+  }
+  const bulanID = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+  const tglLahirFormat = `${tglLahir.getDate()} ${bulanID[tglLahir.getMonth()]} ${tglLahir.getFullYear()}`;
+  $("info_tgl_lahir").textContent = tglLahirFormat;
+  $("info_usia").textContent = `${tahun} tahun ${bulan} bulan`;
+  $("child_info").classList.add('show');
+  $("nama_anak").dataset.tglLahir = anak.tglLahir;
+  $("nama_anak").dataset.usiaSpesifik = `${tahun} tahun ${bulan} bulan`;
+ } else {
+  $("child_info").classList.remove('show');
+  $("nama_anak").dataset.tglLahir = "";
+  $("nama_anak").dataset.usiaSpesifik = "";
+ }
+}
+
+function updateDaftarAnak(){
+ const kelas=$("kelas_pa").value;
+ const datalist=$("daftar_anak");
+ datalist.innerHTML="";
+ if(kelas && DAFTAR_ANAK[kelas]){
+  DAFTAR_ANAK[kelas].forEach(a=>{
+   const option=document.createElement("option");
+   option.value=a.nama;
+   datalist.appendChild(option);
+  });
+ }
+ $("nama_anak").value="";
+ $("child_info").classList.remove('show');
+}
+
+$("aspek").innerHTML=Object.keys(IND).map(a=>`<option>${a}</option>`).join("");
+function fillInd(){
+ const a=$("aspek").value, u=$("usia").value;
+ const list=(IND[a]&&IND[a][u])?IND[a][u]:[];
+ $("indikator").innerHTML=list.map(i=>`<option>${i}</option>`).join("")+`<option value="lainnya">✨ Lainnya (Ketik sendiri)</option>`;
+ cekIndikatorManual();
+}
+$("aspek").onchange=fillInd;$("usia").onchange=fillInd;$("indikator").onchange=cekIndikatorManual;
+function cekIndikatorManual(){
+ if($("indikator").value==='lainnya')$("indikator_manual_wrap").classList.remove('hidden');
+ else $("indikator_manual_wrap").classList.add('hidden');
+}
+fillInd();
+
+function buatKriteria(nama){
+ const i=critCount++;
+ const div=document.createElement('div');
+ div.className='crit';div.id='crit'+i;
+ div.innerHTML=`
+  <button class="hapus" onclick="hapusKriteria(${i})">Hapus</button>
+  <label>Kriteria ${i+1}</label>
+  <input id="k${i}" value="${nama||''}" placeholder="Nama kriteria">
+  ${LV.map(([c,n])=>`
+  <div class="lvl"><div class="lb">${c} <span style="font-weight:400;color:var(--m)">- ${n}</span></div>
+  <div class="row"><textarea id="d${i}${c}" placeholder="Ketik ide awalmu..." oninput="chk(${i},'${c}')"></textarea>
+  <button class="ex" id="b${i}${c}" disabled onclick="tampilkanContoh(${i},'${c}','${n}')">💡 Lihat Contoh</button></div></div>`).join("")}`;
+ $("crits").appendChild(div);
+}
+function tambahKriteria(){buatKriteria("")}
+function hapusKriteria(i){const el=$('crit'+i);if(el)el.remove()}
+DEF.forEach(d=>buatKriteria(d));
+function chk(i,c){$("b"+i+c).disabled=$("d"+i+c).value.trim().length<5}
+function tampilkanContoh(i,c,nama){
+ const k=$("k"+i).value.trim()||nama;
+ $("modalTitle").textContent=`Contoh untuk ${c}`;
+ $("modalText").textContent=ex(c,k);
+ $("modalBg").classList.add('show');
+}
+function tutupModal(){$("modalBg").classList.remove('show')}
+
+function go(n){
+ document.querySelectorAll(".screen").forEach((s,i)=>s.classList.toggle("active",i===n));
+ $("steps").innerHTML=NAMES.map((t,i)=>`<div class="step ${i===n?"on":i<n?"done":""}">${i}<span>. ${t}</span></div>`).join("");
+ if(n===4)buildPreview();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function next(n){
+ if(n===0){
+  if(!$("nama_guru").value.trim()||!$("kelas_pa").value||!$("nama_anak").value.trim()){$("e0").textContent="Mohon isi Nama Guru, Kelas, dan Nama Anak.";return}
+  $("e0").textContent=""
+ }
+ if(n===1){
+  let iv=$("indikator").value==='lainnya'?$("indikator_manual").value:$("indikator").value;
+  if(!$("tanggal").value||!$("jam").value||!$("judul").value.trim()||!$("tujuan").value.trim()||!iv.trim()){$("e1").textContent="Mohon lengkapi semua kolom.";return}
+  $("e1").textContent=""
+ }
+ if(n===2){
+  if(!$("tugas").value.trim()||!$("alat").value.trim()||!$("skrip").value.trim()||!$("prosedur").value.trim()||!$("waktu").value){$("e2").textContent="Mohon lengkapi semua kolom (termasuk pilih Estimasi Waktu).";return}
+  $("e2").textContent=""
+ }
+ if(n===3){
+  const cs=document.querySelectorAll('.crit');
+  if(cs.length<3){$("e3").textContent="Minimal 3 kriteria.";return}
+  let ok=true;
+  cs.forEach(el=>{
+   const idx=el.id.replace('crit','');
+   if(!$("k"+idx).value.trim())ok=false;
+   LV.forEach(([c])=>{if(!$("d"+idx+c).value.trim())ok=false});
+  });
+  if(!ok){$("e3").textContent="Mohon isi nama kriteria dan seluruh deskriptor.";return}
+  $("e3").textContent=""
+ }
+ go(n+1);
+}
+
+function getData(){
+ const cs=document.querySelectorAll('.crit');
+ const rubrik=Array.from(cs).map(el=>{
+  const idx=el.id.replace('crit','');
+  return{kriteria:$("k"+idx).value.trim(), BB:$("d"+idx+"BB").value.trim(), MB:$("d"+idx+"MB").value.trim(), BSH:$("d"+idx+"BSH").value.trim(), BSB:$("d"+idx+"BSB").value.trim()};
+ });
+ let iv=$("indikator").value==='lainnya'?$("indikator_manual").value:$("indikator").value;
+ return{
+  namaGuru:$("nama_guru").value.trim(), nip:$("nip").value.trim(), kelasPA:$("kelas_pa").value,
+  namaAnak:$("nama_anak").value.trim(), 
+  tglLahir:$("nama_anak").dataset.tglLahir || "",
+  usiaSpesifik:$("nama_anak").dataset.usiaSpesifik || "",
+  tanggal:$("tanggal").value, jam:$("jam").value,
+  aspek:$("aspek").value, usia:$("usia").value, indikator:iv,
+  judul:$("judul").value.trim(), tujuan:$("tujuan").value.trim(), tugas:$("tugas").value.trim(),
+  alat:$("alat").value.trim(), skrip:$("skrip").value.trim(), prosedur:$("prosedur").value.trim(), 
+  waktu:$("waktu").value, rubrik:rubrik
+ };
+}
+
+function buildPreview(){
+ const d=getData();const nl=s=>esc(s).replace(/\n/g,"<br>");
+ let rows=d.rubrik.map(r=>`<tr><td><b>${esc(r.kriteria)}</b></td><td>${nl(r.BB)}</td><td>${nl(r.MB)}</td><td>${nl(r.BSH)}</td><td>${nl(r.BSB)}</td></tr>`).join("");
+ let tglLahirFormat = '-';
+ if(d.tglLahir){
+  const tl = new Date(d.tglLahir);
+  const bulanID = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  tglLahirFormat = `${tl.getDate()} ${bulanID[tl.getMonth()]} ${tl.getFullYear()}`;
+ }
+ $("preview").innerHTML=`
+ <h2 style="text-align:center;margin-bottom:4px">Rubrik Unjuk Kerja Otentik</h2>
+ <h3 style="text-align:center;margin:0 0 14px">${esc(d.judul)}</h3>
+ <table class="meta">
+ <tr><td>Nama Guru</td><td>: ${esc(d.namaGuru)} ${d.nip?'('+esc(d.nip)+')':''}</td></tr>
+ <tr><td>Kelas PAUD</td><td>: ${esc(d.kelasPA)}</td></tr>
+ <tr><td>Nama Anak</td><td>: ${esc(d.namaAnak)}</td></tr>
+ <tr><td>Tanggal Lahir</td><td>: ${tglLahirFormat}</td></tr>
+ <tr><td>Usia Saat Asesmen</td><td>: <b>${esc(d.usiaSpesifik)}</b> (${esc(d.usia)})</td></tr>
+ <tr><td>Tanggal & Jam Asesmen</td><td>: ${esc(d.tanggal)} - ${esc(d.jam)} WIB</td></tr>
+ <tr><td>Aspek</td><td>: ${esc(d.aspek)}</td></tr>
+ <tr><td>Indikator STPPA</td><td>: ${esc(d.indikator)}</td></tr>
+ <tr><td>Tujuan Asesmen</td><td>: ${esc(d.tujuan)}</td></tr>
+ <tr><td>Estimasi Waktu</td><td>: ${esc(d.waktu)}</td></tr></table>
+ <div class="blk"><b>Deskripsi Tugas:</b><div class="pre">${esc(d.tugas)}</div></div>
+ <div class="blk"><b>Alat & Bahan:</b><div class="pre">${esc(d.alat)}</div></div>
+ <div class="blk"><b>Skrip untuk Anak:</b><div class="pre">${esc(d.skrip)}</div></div>
+ <div class="blk"><b>Prosedur Observasi:</b><div class="pre">${esc(d.prosedur)}</div></div>
+ <div class="tw"><table><thead><tr><th>Kriteria</th>${LV.map(([c,n])=>`<th>${c}<br><small>${n}</small></th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>
+ <div class="checklist">✅ Deskripsi spesifik & teramati</div>`;
+}
+
+function simpanKeGoogle(){
+ if(APPS_SCRIPT_URL.includes("MASUKKAN") || APPS_SCRIPT_URL.includes("URL_WEB_APP")){
+  $("e4").textContent="⚠️ URL Apps Script belum diatur di kode HTML."; return;
+ }
+ $("e4").textContent="";$("ok4").textContent="⏳ Mengirim data ke Google Drive & Sheets...";
+ const data=getData();
+ fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)})
+ .then(r=>r.json()).then(res=>{
+  if(res.status==="success"){
+   $("ok4").textContent=`✅ Berhasil! Data tersimpan. Link: ${res.driveUrl}`;
+  }else{
+   $("e4").textContent="❌ Gagal: "+res.message; $("ok4").textContent="";
+  }
+ }).catch(err=>{
+  $("e4").textContent="❌ Error koneksi: "+err.message; $("ok4").textContent="";
+ });
+}
+isiWaktuSekarang();
+go(0);
+</script>
+</body>
+</html>
